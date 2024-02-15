@@ -3,12 +3,10 @@
 <h1>Merchants</h1>
 
 <div id="merchants">
-  <% @merchants.each do |merchant| %>
-    <%= render merchant %>
+  <% @merchants.take(3).each do |merchant| %>
     <p>
-      <%= link_to "Show this merchant", merchant %>
+      <%= link_to "#{merchant.name}", merchant_path(merchant.id) %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New merchant", new_merchant_path %>

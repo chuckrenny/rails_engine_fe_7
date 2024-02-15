@@ -1,10 +1,14 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @merchant %>
+<h1>Merchant Items</h1>
 
-<div>
-  <%= link_to "Edit this merchant", edit_merchant_path(@merchant) %> |
-  <%= link_to "Back to merchants", merchants_path %>
-
-  <%= button_to "Destroy this merchant", @merchant, method: :delete %>
+<div id="merchants-items">
+  <% @items.take(3).each do |item| %>
+    <p>
+      <li>Name: <%= item.name %></li>
+      <li>Description: <%= item.description %></li>
+      <li>Price: <%= item.unit_price %></li><br>
+    </p>
+  <% end %>
 </div>
+

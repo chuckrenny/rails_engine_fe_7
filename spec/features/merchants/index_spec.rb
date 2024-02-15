@@ -1,6 +1,6 @@
 require 'rails_helper' 
 
-RSpec.describe Merchants, type: :feature do
+RSpec.describe 'Merchant Index', type: :feature do
   # User Story - Merchants
   # As a visitor,
   # When I visit '/merchants'
@@ -9,23 +9,27 @@ RSpec.describe Merchants, type: :feature do
   # I should be on page '/merchants/:id'
   # And I should see a list of items that merchant sells.
 
-  before :each do
-    merchant1 
+  it 'visits merchants index page and can see a list of merchants as links' do
+    VCR.use_cassette('merchants_index') do
+      visit merchants_path
+
+      expect(page).to have_link('Schroeder-Jerde')
+      expect(page).to have_link('Klein, Rempel and Jones')
+      expect(page).to have_link('Willms and Sons')
+    end
   end
 
-  create_table "items", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.float "unit_price"
-    t.bigint "merchant_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["merchant_id"], name: "index_items_on_merchant_id"
-  end
+  it 'visits merchants index page and can click a merchant name to be redirected to merchant show page and displays all items' do
+    VCR.use_cassette('merchants_index') do
+      visit merchants_path
+    end
 
-  create_table "merchants", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    VCR.use_cassette('merchant_show_all_items') do
+      click_link('Willms and Sons')
+
+      expect(current_path).to eq(merchant_path(id: 3))
+      expect(page).to have_content('Item Enim Error')
+      expect(page).to have_content('775.96')
+    end
   end
 end

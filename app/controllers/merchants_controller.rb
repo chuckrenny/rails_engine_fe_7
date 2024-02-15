@@ -1,18 +1,11 @@
 class MerchantsController < ApplicationController
   # GET /merchants or /merchants.json
   def index
-    @merchants = Merchant.all
+    @merchants = MerchantFacade.new.merchant_index
   end
 
   # GET /merchants/1 or /merchants/1.json
   def show
-    @merchant = Merchant.find(params[:id])
+    @items = MerchantFacade.new.merchant_items(params[:id])
   end
-
-
-  private
-    # Only allow a list of trusted parameters through.
-    def merchant_params
-      params.require(:merchant).permit(:name)
-    end
 end
